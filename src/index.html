@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="./assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-6 text-center">
+                <h1>Hello World</h1>
+            </div>
+        </div>
+    </div>
+
+    <script src="./assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const oracledb = require('oracledb');
+        const config = require('../config');
+        (async () => {
+            await oracledb.createPool(config.oracleDbConfig);
+            const connOracle = await oracledb.getConnection();
+            const sql = `SELECT * FROM users`;
+            const users = await connOracle.execute(sql, {}, { outFormat: oracledb.OBJECT });
+            connOracle.close();
+            if (users.rows.length) {
+                console.log(users.rows);
+            }
+        })();
+    </script>
+</body>
+
+</html>
